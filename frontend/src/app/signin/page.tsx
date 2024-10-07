@@ -3,22 +3,13 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { login } from '@/utils/auth';
 
 export default function SignIn() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const router = useRouter();
-
-  // 임시 사용자 데이터
-  const tempUsers = [
-    {
-      username: 'user1',
-      password: 'password1',
-      nickname: '하프냠',
-      api: 'abc123',
-    },
-  ];
 
   const validateForm = () => {
     const newErrors: { [key: string]: string } = {};
@@ -35,18 +26,15 @@ export default function SignIn() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const isValid = validateForm();
     if (isValid) {
-      const user = tempUsers.find(
-        (u) => u.username === username && u.password === password
-      );
-      if (user) {
+      try {
+        await login(username, password);
         console.log('로그인 성공:', username);
-        // TODO: backend 연동 후 수정
         router.push('/');
-      } else {
+      } catch (error) {
         setErrors({ login: '아이디 또는 비밀번호가 올바르지 않습니다.' });
       }
     }

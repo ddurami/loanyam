@@ -2,11 +2,25 @@
 
 import ThemeToggle from './ThemeToggle';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { pages } from '@/config/pages';
+import { logout, getAccessToken } from '@/utils/auth';
+import { useRouter } from 'next/navigation';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    setIsLoggedIn(!!getAccessToken());
+  }, []);
+
+  const handleLogout = async () => {
+    await logout();
+    setIsLoggedIn(false);
+    router.push('/');
+  };
 
   const closeMenu = () => {
     setIsMenuOpen(false);
