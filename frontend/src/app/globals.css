@@ -22,3 +22,21 @@ body {
     text-wrap: balance;
   }
 }
+
+@layer components {
+  .input-field {
+    @apply w-full px-4 py-2 bg-light-cardBg dark:bg-dark-cardBg text-light-cardText dark:text-dark-cardText border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-headerFooter-hover focus:border-transparent transition duration-300 ease-in-out;
+  }
+
+  .input-wrapper {
+    @apply mb-4;
+  }
+
+  .error-message {
+    @apply text-red-500 text-sm mt-1 mb-2;
+  }
+
+  .submit-button {
+    @apply w-full px-4 py-2 text-headerFooter-text bg-headerFooter-background hover:bg-headerFooter-hover rounded-lg focus:outline-none focus:ring-2 focus:ring-headerFooter-hover focus:ring-opacity-50 transition duration-300 ease-in-out;
+  }
+}
