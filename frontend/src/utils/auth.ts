@@ -1,6 +1,24 @@
 import axios from 'axios';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+
+export const register = async (
+  username: string,
+  password: string,
+  mainCharacter: string,
+  apiKey: string
+) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/auth/register`,
+      { username, password, mainCharacter, apiKey },
+      { withCredentials: true }
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 
 export const login = async (username: string, password: string) => {
   try {

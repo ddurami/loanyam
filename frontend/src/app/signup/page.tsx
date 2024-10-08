@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { register } from '@/utils/auth';
+import { useRouter } from 'next/navigation';
 
 export default function SignUp() {
   const [username, setUsername] = useState('');
@@ -9,6 +11,8 @@ export default function SignUp() {
   const [mainCharacter, setMainCharacter] = useState('');
   const [apiKey, setApiKey] = useState('');
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  const router = useRouter();
 
   const validateForm = () => {
     const newErrors: { [key: string]: string } = {};
@@ -41,12 +45,19 @@ export default function SignUp() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const isValid = validateForm();
     if (isValid) {
-      // TODO: 회원가입 로직 구현
-      console.log('회원가입 시도:', username, password, mainCharacter, apiKey);
+      try {
+        await register(username, password, mainCharacter, apiKey);
+        console.log('회원가입 성공:', username);
+        router.push('/signin');
+      } catch (error) {
+        setErrors({
+          submit: '회원가입 중 오류가 발생했습니다. 다시 시도해주세요.',
+        });
+      }
     }
   };
 
